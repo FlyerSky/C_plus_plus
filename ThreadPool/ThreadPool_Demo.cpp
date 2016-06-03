@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const size_t THREAD_NUM = 4;
+const size_t THREAD_NUM = 6;
 
 class Foo
 {
@@ -33,7 +33,7 @@ void DemoFunction()
 	
 	threadpool::ThreadPool thread_pool(THREAD_NUM);
 	thread_pool.Start();
-	for (size_t i = 0; i < 26; i++)
+	for (size_t i = 0; i < 100; i++)
 	{
 		char c = i % 10 + '0';
 		thread_pool.Add(threadpool::NewClosure(&foo, &Foo::Append, c));
