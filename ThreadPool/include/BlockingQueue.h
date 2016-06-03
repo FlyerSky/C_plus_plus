@@ -11,11 +11,40 @@ namespace threadpool {
 template<class T>
 class BlockingQueue : NonCopyable {
 public:
-	BlockingQueue();
-	void Push(const T& x);
-	T Pop();
-	size_t Size() const;
-	bool Empty() const;
+	BlockingQueue() : m_mutex(), m_notEmpty(m_mutex), m_queue()
+	{
+	}
+
+	void Push(const T& x)
+	{
+		MutexLockGuard lock(m_mutex);
+		m_queue.push(x);
+		m_notEmpty.Notify();
+	}
+
+	T Pop()
+	{
+		MutexLockGuard lock(m_mutex);
+		while (m_queue.empty())
+		{
+			m_notEmpty.Wait();
+		}
+		assert(!m_queue.empty());
+		T front(m_queue.front());
+		m_queue.pop();
+		return front;
+	}
+
+	size_t Size() const
+	{
+		MutexLockGuard lock(m_mutex);
+		return m_queue.size();
+	}
+
+	bool Empty() const
+	{
+		return Size() == 0;
+	}
 
 private:
 	mutable MutexLock m_mutex;

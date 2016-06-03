@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef THREADPOOL_NONCOPYABLE_H
 #define THREADPOOL_NONCOPYABLE_H
 

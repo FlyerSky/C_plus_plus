@@ -5,6 +5,8 @@
 
 namespace threadpool {
 
+// 类模板（一般将声明和定义都放在.h文件）
+
 class ClosureInterface
 {
 public:
@@ -78,7 +80,7 @@ public:
 	
 	virtual void Run()
 	{
-		(*m_fun)(arg1, arg2);
+		(*m_fun)(m_arg1, m_arg2);
 	}
 
 private:
@@ -91,7 +93,7 @@ template <class Funct, class Arg1, class Arg2, class Arg3>
 class Closure3 : public ClosureInterface
 {
 public:
-	Closure2(Funct fun, Arg1 arg1, Arg2 arg2, Arg3 arg3)
+	Closure3(Funct fun, Arg1 arg1, Arg2 arg2, Arg3 arg3)
 	{
 		m_fun = fun;
 		m_arg1 = arg1;
@@ -99,7 +101,7 @@ public:
 		m_arg3 = arg3;
 	}
 	
-	virtual ~Closure2()
+	virtual ~Closure3()
 	{
 	}
 
@@ -141,17 +143,17 @@ private:
 };
 
 template <class Obj, class Funct, class Arg1>
-class ObjClosure0 : public ClosureInterface
+class ObjClosure1 : public ClosureInterface
 {
 public:
-	ObjClosure0(Obj* p, Funct fun, Arg1 arg1)
+	ObjClosure1(Obj* p, Funct fun, Arg1 arg1)
 	{
 		m_pObj = p;
 		m_fun = fun;
 		m_arg1 = arg1;
 	}
 
-	virtual ~ObjClosure0()
+	virtual ~ObjClosure1()
 	{
 	}
 	
@@ -167,17 +169,17 @@ private:
 };
 
 template <class Obj, class Funct, class Arg1, class Arg2>
-class ObjClosure0 : public ClosureInterface
+class ObjClosure2 : public ClosureInterface
 {
 public:
-	ObjClosure0(Obj* p, Funct fun, Arg1 arg1, Arg2 arg2)
+	ObjClosure2(Obj* p, Funct fun, Arg1 arg1, Arg2 arg2)
 	{
 		m_pObj = p;
 		m_arg1 = arg1;
 		m_arg2 = arg2;
 	}
 
-	virtual ~ObjClosure0()
+	virtual ~ObjClosure2()
 	{
 	}
 	
@@ -194,10 +196,10 @@ private:
 };
 
 template <class Obj, class Funct, class Arg1, class Arg2, class Arg3>
-class ObjClosure0 : public ClosureInterface
+class ObjClosure3 : public ClosureInterface
 {
 public:
-	ObjClosure0(Obj* p, Funct fun, Arg1 arg1, Arg2 arg2, Arg3 arg3)
+	ObjClosure3(Obj* p, Funct fun, Arg1 arg1, Arg2 arg2, Arg3 arg3)
 	{
 		m_pObj = p;
 		m_fun = fun;
@@ -206,7 +208,7 @@ public:
 		m_arg3 = arg3;
 	}
 
-	virtual ~ObjClosure0()
+	virtual ~ObjClosure3()
 	{
 	}
 	
@@ -224,31 +226,66 @@ private:
 };
 
 
+// 函数模板（一般将声明放在.h文件，定义放在.cpp文件）
+
 template <class T>
-ClosureInterface* NewClosure(T(*fun)());
+ClosureInterface* NewClosure(T (*fun)())
+{
+	return new Closure0<T (*)()>(fun);
+}
 
 template <class T, class Arg1>
-ClosureInterface* NewClosure(T(*fun)(Arg1), Arg1 arg1);
+ClosureInterface* NewClosure(T (*fun)(Arg1), Arg1 arg1)
+{
+	return new Closure1<T (*)(Arg1), Arg1>(fun, arg1);
+}
 
 template <class T, class Arg1, class Arg2>
-ClosureInterface* NewClosure(T(*fun)(Arg1, Arg2), Arg1 arg1, Arg2 arg2);
+ClosureInterface* NewClosure(T (*fun)(Arg1, Arg2), Arg1 arg1, Arg2 arg2)
+{
+	return new Closure2<T (*)(Arg1, Arg2), Arg1, Arg2>(fun, arg1, arg2);
+}
 
 template <class T, class Arg1, class Arg2, class Arg3>
-ClosureInterface* NewClosure(T(*fun)(Arg1, Arg2, Arg3), Arg1 arg1, Arg2 arg2, Arg3 arg3);
+ClosureInterface* NewClosure(T (*fun)(Arg1, Arg2, Arg3), Arg1 arg1, Arg2 arg2, Arg3 arg3)
+{
+	return new Closure3<T (*)(Arg1, Arg2, Arg3), Arg1, Arg2, Arg3>(fun, arg1, arg2, arg3);
+}
 
+
+/***************************************************
+T(Obj::*fun)(Arg1)
+操作符 ::* 用来声明一个类成员函数指针,即该指针指向特定类的成员函数
+
+(objPtr->*fun)(arg1)
+操作符 ->* 用来通过对象指针调用类成员函数指针
+(obj.*fun)(arg1)
+操作符 .* 用来通过对象调用类成员函数指针
+****************************************************/
 
 template <class Obj, class T>
-ClosureInterface* NewClosure(Obj* obj, T(Obj::*fun)());
+ClosureInterface* NewClosure(Obj* obj, T (Obj::* fun)())
+{
+        return new ObjClosure0<Obj, T (Obj::* )()>(obj, fun);
+}
 
 template <class Obj, class T, class Arg1>
-ClosureInterface* NewClosure(Obj* obj, T(Obj::*fun)(Arg1), Arg1 arg1);
+ClosureInterface* NewClosure(Obj* obj, T (Obj::* fun)(Arg1), Arg1 arg1)
+{
+        return new ObjClosure1<Obj, T (Obj::* )(Arg1), Arg1>(obj, fun, arg1);
+}
 
 template <class Obj, class T, class Arg1, class Arg2>
-ClosureInterface* NewClosure(Obj* Obj, T(Obj::*fun)(Arg1, Arg2), Arg1 arg1, Arg2 arg2);
+ClosureInterface* NewClosure(Obj* obj, T (Obj::* fun)(Arg1, Arg2), Arg1 arg1, Arg2 arg2)
+{
+        return new ObjClosure2<Obj, T (Obj::*)(Arg1, Arg2), Arg2, Arg2>(obj, fun, arg1, arg2);
+}
 
 template <class Obj, class T, class Arg1, class Arg2, class Arg3>
-ClosureInterface* NewClosure(Obj* obj, T(Obj::*fun)(Arg1, Arg2, Arg3), Arg1 arg1, Arg2 arg2, Arg3 arg3);
-
+ClosureInterface* NewClosure(Obj* obj, T (Obj::* fun)(Arg1, Arg2, Arg3), Arg1 arg1, Arg2 arg2, Arg3 arg3)
+{
+        return new ObjClosure3<Obj, T (Obj::*)(Arg1, Arg2, Arg3), Arg1, Arg2, Arg3>(obj, fun, arg1, arg2, arg3);
+}
 
 } // namespace threadpool
 

@@ -32,7 +32,7 @@ public:
 
 	virtual void Run();
 
-protected:
+private:
 	ThreadPool* m_pthreadPool;
 };
 

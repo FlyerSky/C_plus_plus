@@ -23,7 +23,7 @@ public:
 
 	pthread_mutex_t* GetPthreadMutex()
 	{
-		return m_mutex;
+		return &m_mutex;
 	}
 
 private:

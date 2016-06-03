@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef THREADPOOL_STD_EXTENSION_H
 #define THREADPOOL_STD_EXTENSION_H
 
@@ -26,6 +24,7 @@ namespace std {
 #include <set>
 #include <string>
 #include <vector>
+#include <deque>
 #include <fstream>
 #include <sstream>
 
@@ -165,7 +164,7 @@ ostream& operator<<(ostream& os, const set<T> st)
 template <class ContainType, class KeyType>
 bool isIn(const ContainType& contain, const KeyType& key)
 {
-	return contain.end() != contain.find(key)
+	return contain.end() != contain.find(key);
 }
 
 template <class T>
@@ -183,16 +182,16 @@ ofstream& operator<<(ofstream& ofs, const basic_string<T>& s)
 }
 
 /******************************************************************************
-1£©STLÖ»ÓĞÒ»¸ö×Ö·û´®Àà£ºbasic_string¡£Ò»¸öbasic_string¹ÜÀíÒ»¸öÒÔ0×ö½áÊø·ûµÄ×Ö·û´®Êı×é¡£
-×Ö·ûµÄÀàĞÍÊÇbasic_stringÄ£°åµÄ²ÎÊı¡£×ÜµÄÀ´Ëµ£¬Ò»¸öbasic_stringÀàĞÍµÄ±äÁ¿Ó¦¸Ã±»µ±×÷²»Í¸Ã÷µÄ¶ÔÏó¡£
-Äã¿ÉÒÔµÃµ½Ò»¸öÖ¸ÏòÄÚ²¿»º³åÇøµÄÖ»¶ÁÖ¸Õë£¬µ«ÊÇÈÎºÎĞ´²Ù×÷±ØĞëÊ¹ÓÃbasic_stringµÄ²Ù×÷·ûºÍ·½·¨¡£
-2£©basic_stringÓĞÁ½¸öÔ¤¶¨ÒåµÄÀàĞÍ£º°üº¬charµÄstringÀàĞÍºÍ°üº¬wchar_tµÄwstringÀàĞÍ¡£
+1¿STL¿¿¿¿¿¿¿¿¿basic_string¿¿¿basic_string¿¿¿¿¿0¿¿¿¿¿¿¿¿¿¿¿
+¿¿¿¿¿¿basic_string¿¿¿¿¿¿¿¿¿¿¿¿¿basic_string¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿>¿¿
+¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿basic_string¿¿¿¿¿¿¿¿
+2¿basic_string¿¿¿¿¿¿¿¿¿¿¿¿char¿string¿¿¿¿¿wchar_t¿wstring¿¿¿
 *******************************************************************************/
 
 /******************************************************************************
-¹ØÓÚassignµÄº¯ÊıµÄºÃ´¦£¬¾ÍÊÇÔÚ²»ÄÜÊ¹ÓÃ¸³Öµ·û¡° = ¡±µÄÇé¿öÏÂ£¬¿ÉÒÔ½«Ò»¸öÈİÆ÷ÖĞµÄ²¿·ÖÔªËØ
-Í¨¹ıµü´úÆ÷´«µİ¸³Öµµ½ÁíÒ»¸öÈİÆ÷ÖĞ£¬µ«ÊÇÔÚassignµÄÊ¹ÓÃ¹ı³ÌÖĞ£¬ÓĞÒ»µãĞèÒªÌØ±ğ×¢Òâ£¬¾ÍÊÇµ÷
-ÓÃassign()º¯ÊıµÄÈİÆ÷±ØĞëÓĞ×ã¹»µÄ¿Õ¼äÀ´ÈİÄÉ¸´ÖÆ¹ıÀ´µÄÔªËØ¡£
+¿¿assign¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ = ¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿assign¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
+¿assign()¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿
 *******************************************************************************/
 
 } // namespace std
