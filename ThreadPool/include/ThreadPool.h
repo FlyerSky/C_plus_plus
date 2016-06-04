@@ -25,17 +25,6 @@ private:
 	BoundedBlockingQueue<ClosureInterface*> m_bQueue;
 };
 
-class Worker : public IThread {
-public:
-	Worker(ThreadPool* pool);
-	virtual ~Worker();
-
-	virtual void Run();
-
-private:
-	ThreadPool* m_pthreadPool;
-};
-
 } // namespace threadpool
 
 #endif

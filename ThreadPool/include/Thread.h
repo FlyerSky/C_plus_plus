@@ -10,45 +10,34 @@ namespace threadpool {
 
 class IThread: NonCopyable{
 public:
-	IThread() : isStarted(false), isJoined(false) {}
-
-	virtual ~IThread()
-	{
-		if (isStarted && !isJoined)
-		{
-			XCHECK(!pthread_detach(m_thread));
-		}
-	}
+	IThread();
+	virtual ~IThread();
 
 	virtual void Run() = 0;
-
-	void Start()
-	{
-		XCHECK(!isStarted);
-		XCHECK(!pthread_create(&m_thread, NULL, work, this));
-		isStarted = true;
-	}
-
-	void Join()
-	{
-		XCHECK(!isJoined);
-		XCHECK(!pthread_join(m_thread, NULL));
-		isJoined = true;
-	}
+	void Start();
+	void Join();
 
 private:
-	static void* work(void* data)
-	{
-		IThread* ptr = (IThread*)data;
-		ptr->Run();
-		return NULL;
-	}
+	static void* work(void* data);
 
 private:
 	pthread_t m_thread;
 	bool isStarted;
 	bool isJoined;
 }; // class IThread
+
+
+class Worker : public IThread {
+public:
+	Worker(ThreadPool* pool);
+	virtual ~Worker();
+
+	virtual void Run();
+
+private:
+	ThreadPool* m_pthreadPool;
+};  // class Worker
+
 
 } // namespace threadpool
 

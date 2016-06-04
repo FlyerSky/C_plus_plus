@@ -47,37 +47,4 @@ void ThreadPool::Add(ClosureInterface* task)
 }
 
 
-// class Worker implementation
-
-Worker::Worker(ThreadPool* pool) : m_pthreadPool(pool)
-{
-	assert(m_pthreadPool);
-}
-
-Worker::~Worker()
-{
-}
-
-void Worker::Run()
-{
-	while (true)
-	{
-		ClosureInterface* closure = m_pthreadPool->m_bQueue.Pop();
-		if (closure == NULL)
-		{
-			break;
-		}
-		try {
-			closure->Run();
-		}
-		catch (std::exception& e) {
-			XLOG(ERROR) << e.what();
-		}
-		catch (...) {
-			XLOG(ERROR) << "unknown exception.";
-		}
-		delete closure;
-	}
-}
-
 } // namespace threadpool
