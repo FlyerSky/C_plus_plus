@@ -26,19 +26,6 @@ private:
 	bool isJoined;
 }; // class IThread
 
-
-class Worker : public IThread {
-public:
-	Worker(ThreadPool* pool);
-	virtual ~Worker();
-
-	virtual void Run();
-
-private:
-	ThreadPool* m_pthreadPool;
-};  // class Worker
-
-
 } // namespace threadpool
 
 #endif // THREADPOOL_THREAD_H
